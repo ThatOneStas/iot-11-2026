@@ -11,11 +11,11 @@ class Kind(Enum):
 class Pet:
     # Constructor
     def __init__(self,
-                name = "",
-                breed = "",
-                age = 0,
-                greeting = "",
-                mass = 0
+                name="",
+                breed="",
+                age=0,
+                greeting="",
+                mass=0
                 ):
         self.name = name
         self.breed = breed
@@ -31,12 +31,12 @@ class Pet:
         return f"{self.name}, {self.breed}, Age: {self.age}, Greeting: {self.greeting}, Mass: {self.mass}"
 
     def is_polite(self):
-        return True if "Hello" in self.greeting else False
+        return "Hello" in self.greeting
     
 class Home:
     # Constructor
     def __init__(self,
-                 pets = None
+                 pets=None
                  ):
         if pets is None:
             self.pets = []    
@@ -60,24 +60,12 @@ class Home:
         return self.pets
 
     def sort_by_age(self, mode="asc"):
-        n = len(self.pets)
-        is_asc = (mode == "asc")
-    
-        for i in range(n):
-            for j in range(0, n - i - 1):
-                if (is_asc and self.pets[j].age > self.pets[j + 1].age) or \
-                    (not is_asc and self.pets[j].age < self.pets[j + 1].age):
-                    self.pets[j], self.pets[j + 1] = self.pets[j + 1], self.pets[j]
-
+        self.pets.sort(key=lambda p: p.age, reverse=(mode != "asc"))
 
     def are_friends(self, pets):
         result = []
         for pet in pets:
-            flag = False
-            for home_pet in self.pets:
-                if abs(pet.age - home_pet.age) < 2:
-                    flag = True
-            result.append(flag)
+            result.append(any(abs(pet.age - home_pet.age) < 2 for home_pet in self.pets))
         return result
 
 def main():
@@ -118,4 +106,6 @@ def main():
         print(pet)
 
     print() # Separate the output for destructors' messages
-main()
+
+if  __name__ == "__main__":
+    main()
